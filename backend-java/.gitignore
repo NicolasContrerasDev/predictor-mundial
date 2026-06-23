@@ -1,0 +1,20 @@
+# Gradle
+.gradle/
+build/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Logs
+*.log
+
+# Configuración sensible
+src/main/resources/application.properties
+
+# Variables de entorno
+.env
+
+# Archivos temporales
+bin/
