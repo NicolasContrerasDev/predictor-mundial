@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: mundial_db_container
+    environment:
+      - POSTGRES_DB=mundial_db
+      - POSTGRES_USER=admin_mundial
+      - POSTGRES_PASSWORD=secreto_mundial
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
