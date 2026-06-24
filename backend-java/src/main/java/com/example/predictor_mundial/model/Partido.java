@@ -3,47 +3,29 @@ package com.example.predictor_mundial.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "partidos")
+@Table(name = "partidos_mundial")
 public class Partido {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "equipo_local", nullable = false)
 	private String equipoLocal;
+	private String equipoVisita;
 
-	@Column(name = "equipo_visitante", nullable = false)
-	private String equipoVisitante;
+	private Integer historialVictoriasLocal;
+	private Integer historialVictoriasVisita;
+	private Integer empatesHistoricos;
 
-	@Column(name = "fase_torneo")
-	private String faseTorneo;
+	private Integer tarjetasAmarillasLocal;
+	private Integer tarjetasAmarillasVisita;
+	private Integer tarjetasRojasLocal;
+	private Integer tarjetasRojasVisita;
 
-	@Column(name = "cuota_local")
-	private Double cuotaLocal;
+	private Double probVictoriaLocal;
+	private Double probEmpate;
+	private Double probVictoriaVisita;
 
-	@Column(name = "cuota_empate")
-	private Double cuotaEmpate;
-
-	@Column(name = "cuota_visitante")
-	private Double cuotaVisitante;
-
-	@Column(name = "prediccion_resultado")
-	private String prediccionResultado;
-
-	@Column(name = "probabilidad_local")
-	private Double probabilidadLocal;
-
-	@Column(name = "probabilidad_empate")
-	private Double probabilidadEmpate;
-
-	@Column(name = "probabilidad_visitante")
-	private Double probabilidadVisitante;
-
-	public Partido() {
-	}
-
-	// Getters y Setters
 	public Long getId() {
 		return id;
 	}
@@ -60,75 +42,91 @@ public class Partido {
 		this.equipoLocal = equipoLocal;
 	}
 
-	public String getEquipoVisitante() {
-		return equipoVisitante;
+	public String getEquipoVisita() {
+		return equipoVisita;
 	}
 
-	public void setEquipoVisitante(String equipoVisitante) {
-		this.equipoVisitante = equipoVisitante;
+	public void setEquipoVisita(String equipoVisita) {
+		this.equipoVisita = equipoVisita;
 	}
 
-	public String getFaseTorneo() {
-		return faseTorneo;
+	public Integer getHistorialVictoriasLocal() {
+		return historialVictoriasLocal;
 	}
 
-	public void setFaseTorneo(String faseTorneo) {
-		this.faseTorneo = faseTorneo;
+	public void setHistorialVictoriasLocal(Integer historialVictoriasLocal) {
+		this.historialVictoriasLocal = historialVictoriasLocal;
 	}
 
-	public Double getCuotaLocal() {
-		return cuotaLocal;
+	public Integer getHistorialVictoriasVisita() {
+		return historialVictoriasVisita;
 	}
 
-	public void setCuotaLocal(Double cuotaLocal) {
-		this.cuotaLocal = cuotaLocal;
+	public void setHistorialVictoriasVisita(Integer historialVictoriasVisita) {
+		this.historialVictoriasVisita = historialVictoriasVisita;
 	}
 
-	public Double getCuotaEmpate() {
-		return cuotaEmpate;
+	public Integer getEmpatesHistoricos() {
+		return empatesHistoricos;
 	}
 
-	public void setCuotaEmpate(Double cuotaEmpate) {
-		this.cuotaEmpate = cuotaEmpate;
+	public void setEmpatesHistoricos(Integer empatesHistoricos) {
+		this.empatesHistoricos = empatesHistoricos;
 	}
 
-	public Double getCuotaVisitante() {
-		return cuotaVisitante;
+	public Integer getTarjetasAmarillasLocal() {
+		return tarjetasAmarillasLocal;
 	}
 
-	public void setCuotaVisitante(Double cuotaVisitante) {
-		this.cuotaVisitante = cuotaVisitante;
+	public void setTarjetasAmarillasLocal(Integer tarjetasAmarillasLocal) {
+		this.tarjetasAmarillasLocal = tarjetasAmarillasLocal;
 	}
 
-	public String getPrediccionResultado() {
-		return prediccionResultado;
+	public Integer getTarjetasAmarillasVisita() {
+		return tarjetasAmarillasVisita;
 	}
 
-	public void setPrediccionResultado(String prediccionResultado) {
-		this.prediccionResultado = prediccionResultado;
+	public void setTarjetasAmarillasVisita(Integer tarjetasAmarillasVisita) {
+		this.tarjetasAmarillasVisita = tarjetasAmarillasVisita;
 	}
 
-	public Double getProbabilidadLocal() {
-		return probabilidadLocal;
+	public Integer getTarjetasRojasLocal() {
+		return tarjetasRojasLocal;
 	}
 
-	public void setProbabilidadLocal(Double probabilidadLocal) {
-		this.probabilidadLocal = probabilidadLocal;
+	public void setTarjetasRojasLocal(Integer tarjetasRojasLocal) {
+		this.tarjetasRojasLocal = tarjetasRojasLocal;
 	}
 
-	public Double getProbabilidadEmpate() {
-		return probabilidadEmpate;
+	public Integer getTarjetasRojasVisita() {
+		return tarjetasRojasVisita;
 	}
 
-	public void setProbabilidadEmpate(Double probabilidadEmpate) {
-		this.probabilidadEmpate = probabilidadEmpate;
+	public void setTarjetasRojasVisita(Integer tarjetasRojasVisita) {
+		this.tarjetasRojasVisita = tarjetasRojasVisita;
 	}
 
-	public Double getProbabilidadVisitante() {
-		return probabilidadVisitante;
+	public Double getProbVictoriaLocal() {
+		return probVictoriaLocal;
 	}
 
-	public void setProbabilidadVisitante(Double probabilidadVisitante) {
-		this.probabilidadVisitante = probabilidadVisitante;
+	public void setProbVictoriaLocal(Double probVictoriaLocal) {
+		this.probVictoriaLocal = probVictoriaLocal;
+	}
+
+	public Double getProbEmpate() {
+		return probEmpate;
+	}
+
+	public void setProbEmpate(Double probEmpate) {
+		this.probEmpate = probEmpate;
+	}
+
+	public Double getProbVictoriaVisita() {
+		return probVictoriaVisita;
+	}
+
+	public void setProbVictoriaVisita(Double probVictoriaVisita) {
+		this.probVictoriaVisita = probVictoriaVisita;
 	}
 }

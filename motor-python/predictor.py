@@ -1,43 +1,56 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import random
+import joblib
+import numpy as np
 
-# Inicializamos la API de Python
 app = FastAPI()
 
-# Definimos la estructura de datos que Java nos va a enviar
-class PartidoData(BaseModel):
+model = joblib.load("model.pkl")
+
+class PartidoRequest(BaseModel):
     equipoLocal: str
-    equipoVisitante: str
-    cuotaLocal: float
-    cuotaEmpate: float
-    cuotaVisitante: float
+    equipoVisita: str
+    rankingLocal: int
+    rankingVisita: int
+    eloLocal: int
+    eloVisita: int
+    golesFavorLocal: float
+    golesFavorVisita: float
+    golesContraLocal: float
+    golesContraVisita: float
+    formaLocal: int
+    formaVisita: int
 
 @app.post("/predecir")
-def predecir_resultado(partido: PartidoData):
-    # ==========================================
-    # AQUÍ EN EL FUTURO INSERTAREMOS EL MODELO 
-    # DE MACHINE LEARNING (scikit-learn/pandas).
-    # ==========================================
-    
-    print(f"Recibiendo datos de Java: {partido.equipoLocal} vs {partido.equipoVisitante}")
-    
-    # LÓGICA SIMULADA DE PREDICCIÓN (Basada en las cuotas):
-    # En las apuestas, la cuota más baja es el resultado más probable.
-    cuotas = {
-        "1": partido.cuotaLocal,   # 1 = Gana Local
-        "X": partido.cuotaEmpate,  # X = Empate
-        "2": partido.cuotaVisitante # 2 = Gana Visitante
-    }
-    
-    # El modelo elige el resultado con la cuota menor
-    prediccion_calculada = min(cuotas, key=cuotas.get)
-    
-    # Simulamos el porcentaje de confianza que arrojaría un modelo matemático (ej. 75.5%)
-    probabilidad_calculada = round(random.uniform(60.0, 95.0), 2)
+def predecir_partido(request: PartidoRequest):
 
-    # Le respondemos a Java en formato JSON
+    # El orden DEBE coincidir exactamente con las columnas de train_model.py
+    X = np.array([[
+        request.eloLocal,
+        request.eloVisita,
+        request.rankingLocal,
+        request.rankingVisita,
+        request.golesFavorLocal,
+        request.golesFavorVisita,
+        request.golesContraLocal,
+        request.golesContraVisita,
+        request.formaLocal,
+        request.formaVisita
+    ]])
+
+    # predict_proba devuelve [prob_clase_0, prob_clase_1, prob_clase_2]
+    # Clases: 0=visita gana, 1=local gana, 2=empate
+    probs = model.predict_proba(X)[0]
+
+    # prediccion devuelve directamente el label (0, 1 o 2)
+    prediccion = int(model.predict(X)[0])
+
     return {
-        "prediccion": prediccion_calculada,
-        "probabilidadExito": probabilidad_calculada
+        "equipoLocal":        request.equipoLocal,
+        "equipoVisita":       request.equipoVisita,
+        "probabilidadLocal":  round(float(probs[1]), 3),   # clase 1
+        "probabilidadVisita": round(float(probs[0]), 3),   # clase 0
+        "probabilidadEmpate": round(float(probs[2]), 3),   # clase 2
+        "prediccion":         prediccion
+        # 1 = gana local | 0 = gana visita | 2 = empate
     }

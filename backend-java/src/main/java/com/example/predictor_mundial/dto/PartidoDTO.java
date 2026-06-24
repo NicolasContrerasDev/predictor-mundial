@@ -1,47 +1,153 @@
 package com.example.predictor_mundial.dto;
 
+import com.example.predictor_mundial.enums.SeleccionMundial;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.AssertTrue;
+
 public class PartidoDTO {
-    private String equipoLocal;
-    private String equipoVisitante;
-    private String faseTorneo;
-    private Double cuotaLocal;
-    private Double cuotaEmpate;
-    private Double cuotaVisitante;
-    private String prediccionResultado;
-    private Double probabilidadLocal;
-    private Double probabilidadEmpate;
-    private Double probabilidadVisitante;
 
-    public PartidoDTO() {}
+	@Schema(description = "Selección que juega en casa", implementation = SeleccionMundial.class, example = "ARGENTINA")
+	@NotNull(message = "El equipo local es obligatorio")
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private SeleccionMundial equipoLocal;
 
-    // Getters y Setters
-    public String getEquipoLocal() { return equipoLocal; }
-    public void setEquipoLocal(String equipoLocal) { this.equipoLocal = equipoLocal; }
+	@Schema(description = "Selección que juega de visita", implementation = SeleccionMundial.class, example = "MEXICO")
+	@NotNull(message = "El equipo visitante es obligatorio")
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private SeleccionMundial equipoVisita;
 
-    public String getEquipoVisitante() { return equipoVisitante; }
-    public void setEquipoVisitante(String equipoVisitante) { this.equipoVisitante = equipoVisitante; }
+	private Integer historialVictoriasLocal = 0;
+	private Integer historialVictoriasVisita = 0;
+	private Integer empatesHistoricos = 0;
+	private Integer tarjetasAmarillasLocal = 0;
+	private Integer tarjetasAmarillasVisita = 0;
+	private Integer tarjetasRojasLocal = 0;
+	private Integer tarjetasRojasVisita = 0;
 
-    public String getFaseTorneo() { return faseTorneo; }
-    public void setFaseTorneo(String faseTorneo) { this.faseTorneo = faseTorneo; }
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private Double probVictoriaLocal;
 
-    public Double getCuotaLocal() { return cuotaLocal; }
-    public void setCuotaLocal(Double cuotaLocal) { this.cuotaLocal = cuotaLocal; }
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private Double probEmpate;
 
-    public Double getCuotaEmpate() { return cuotaEmpate; }
-    public void setCuotaEmpate(Double cuotaEmpate) { this.cuotaEmpate = cuotaEmpate; }
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private Double probVictoriaVisita;
 
-    public Double getCuotaVisitante() { return cuotaVisitante; }
-    public void setCuotaVisitante(Double cuotaVisitante) { this.cuotaVisitante = cuotaVisitante; }
+	private Long id;
 
-    public String getPrediccionResultado() { return prediccionResultado; }
-    public void setPrediccionResultado(String prediccionResultado) { this.prediccionResultado = prediccionResultado; }
+	public Long getId() {
+		return id;
+	}
 
-    public Double getProbabilidadLocal() { return probabilidadLocal; }
-    public void setProbabilidadLocal(Double probabilidadLocal) { this.probabilidadLocal = probabilidadLocal; }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Double getProbabilidadEmpate() { return probabilidadEmpate; }
-    public void setProbabilidadEmpate(Double probabilidadEmpate) { this.probabilidadEmpate = probabilidadEmpate; }
+	@AssertTrue(message = "Un equipo no puede jugar contra sí mismo. Elige selecciones distintas.")
+	@JsonIgnore
+	public boolean isEquiposDiferentes() {
+		if (equipoLocal == null || equipoVisita == null) {
+			return true;
+		}
+		return !equipoLocal.equals(equipoVisita);
+	}
 
-    public Double getProbabilidadVisitante() { return probabilidadVisitante; }
-    public void setProbabilidadVisitante(Double probabilidadVisitante) { this.probabilidadVisitante = probabilidadVisitante; }
+	public SeleccionMundial getEquipoLocal() {
+		return equipoLocal;
+	}
+
+	public void setEquipoLocal(SeleccionMundial equipoLocal) {
+		this.equipoLocal = equipoLocal;
+	}
+
+	public SeleccionMundial getEquipoVisita() {
+		return equipoVisita;
+	}
+
+	public void setEquipoVisita(SeleccionMundial equipoVisita) {
+		this.equipoVisita = equipoVisita;
+	}
+
+	public Integer getHistorialVictoriasLocal() {
+		return historialVictoriasLocal;
+	}
+
+	public void setHistorialVictoriasLocal(Integer historialVictoriasLocal) {
+		this.historialVictoriasLocal = historialVictoriasLocal;
+	}
+
+	public Integer getHistorialVictoriasVisita() {
+		return historialVictoriasVisita;
+	}
+
+	public void setHistorialVictoriasVisita(Integer historialVictoriasVisita) {
+		this.historialVictoriasVisita = historialVictoriasVisita;
+	}
+
+	public Integer getEmpatesHistoricos() {
+		return empatesHistoricos;
+	}
+
+	public void setEmpatesHistoricos(Integer empatesHistoricos) {
+		this.empatesHistoricos = empatesHistoricos;
+	}
+
+	public Integer getTarjetasAmarillasLocal() {
+		return tarjetasAmarillasLocal;
+	}
+
+	public void setTarjetasAmarillasLocal(Integer tarjetasAmarillasLocal) {
+		this.tarjetasAmarillasLocal = tarjetasAmarillasLocal;
+	}
+
+	public Integer getTarjetasAmarillasVisita() {
+		return tarjetasAmarillasVisita;
+	}
+
+	public void setTarjetasAmarillasVisita(Integer tarjetasAmarillasVisita) {
+		this.tarjetasAmarillasVisita = tarjetasAmarillasVisita;
+	}
+
+	public Integer getTarjetasRojasLocal() {
+		return tarjetasRojasLocal;
+	}
+
+	public void setTarjetasRojasLocal(Integer tarjetasRojasLocal) {
+		this.tarjetasRojasLocal = tarjetasRojasLocal;
+	}
+
+	public Integer getTarjetasRojasVisita() {
+		return tarjetasRojasVisita;
+	}
+
+	public void setTarjetasRojasVisita(Integer tarjetasRojasVisita) {
+		this.tarjetasRojasVisita = tarjetasRojasVisita;
+	}
+
+	public Double getProbVictoriaLocal() {
+		return probVictoriaLocal;
+	}
+
+	public void setProbVictoriaLocal(Double probVictoriaLocal) {
+		this.probVictoriaLocal = probVictoriaLocal;
+	}
+
+	public Double getProbEmpate() {
+		return probEmpate;
+	}
+
+	public void setProbEmpate(Double probEmpate) {
+		this.probEmpate = probEmpate;
+	}
+
+	public Double getProbVictoriaVisita() {
+		return probVictoriaVisita;
+	}
+
+	public void setProbVictoriaVisita(Double probVictoriaVisita) {
+		this.probVictoriaVisita = probVictoriaVisita;
+	}
 }
